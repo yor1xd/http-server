@@ -1,4 +1,6 @@
 #include "../../include/header.h"
+#include "../../include/utils.h"
+#include "../../include/buffer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -21,6 +23,9 @@ struct http_request {
 
 struct http_response {
   int code;
+
+  struct header_buffer buffer;
+
   struct header_field *headers;
   unsigned int headers_count;
 };
@@ -132,6 +137,9 @@ int parse_request(char* header_buf, http_request *req){
   size_t path_len = strlen(path);
 
   //Sanitize path now
+  res = sanitize_path(&path, path_len);
+  if(res == -1) return -1;
+
   res = add_header_path(req, path, path_len);
   if(res == -1) return -1;
 
