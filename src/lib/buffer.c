@@ -44,3 +44,30 @@ void free_buffer(header_buffer *header_buf){
   free(header_buf);
 
 }
+
+int is_buffer_empty(header_buffer *header_buf){
+  if(header_buf->length == 0) return 1;
+  else return 0;
+}
+
+void clear_buffer(header_buffer *header_buf){
+  memset(header_buf->buf, 0, header_buf->length);
+  header_buf->length = 0;
+}
+
+void set_buffer(header_buffer *header_buf, char* buf, size_t buf_size){
+  clear_buffer(header_buf);
+  append_buffer(header_buf, buf, buf_size);
+}
+
+char* get_buffer_content(header_buffer *header_buf){
+  return header_buf->buf;
+}
+
+size_t get_buffer_length(header_buffer *header_buf){
+  return header_buf->length;
+}
+
+size_t get_buffer_capacity(header_buffer *header_buf){
+  return header_buf->capacity;
+}
